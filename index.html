@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>pro table</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <center>
+            <div ng-app="myApp" ng-controller="myController">
+                <input type="text" ng-model="name" class="input" placeholder="name">
+                <input type="text" ng-model="score" class="input" placeholder="score">
+                <button ng-click="addRow()"> Add Row </button>
+                <br><br><br><br>
+                <input type="text" placeholder="search" class="search" ng-model="search">
+                <table> 
+                    <tr>
+                        <th ng-click="editRow()">✎</th>
+                        <th ng-click="SortHeader('-name')">Name</th>
+                        <th ng-click="SortHeader('-score')">score</th>
+                        <th ng-click="removeRow()">X</th>
+                    </tr>
+                    <tr ng-repeat="Cell in students | filter : search | orderBy:Sort">
+                        <td><input class="SizeCheckbox" type="checkbox" ng-model="Cell.selected" ng-change="selected(Cell)"></td>
+                        <td>{{Cell.name}}</td>
+                        <td>{{Cell.score}}</td>
+                        <td><input class="SizeCheckbox" type="checkbox" ng-model="Cell.Remove"></td>
+                    </tr>
+                </table>
+                <br>
+                <div id="ShowHide">
+                    <input type="text" class="input" name="name" ng-model="Employee.name" >
+                    <input type="text" class="input" name="score" ng-model="Employee.score" >
+                </div>
+            </div>
+        </center>
+    </body>
+    <script src="main.js"></script>
+</html>
