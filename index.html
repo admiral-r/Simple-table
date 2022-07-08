@@ -1,40 +1,219 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>pro table</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <center>
-            <div ng-app="myApp" ng-controller="myController">
-                <input type="text" ng-model="name" class="input" placeholder="name">
-                <input type="text" ng-model="score" class="input" placeholder="score">
-                <button ng-click="addRow()"> Add Row </button>
-                <br><br><br><br>
-                <input type="text" placeholder="search" class="search" ng-model="search">
-                <table> 
-                    <tr>
-                        <th ng-click="editRow()">✎</th>
-                        <th ng-click="SortHeader('-name')">Name</th>
-                        <th ng-click="SortHeader('-score')">score</th>
-                        <th ng-click="removeRow()">X</th>
-                    </tr>
-                    <tr ng-repeat="Cell in students | filter : search | orderBy:Sort">
-                        <td><input class="SizeCheckbox" type="checkbox" ng-model="Cell.selected" ng-change="selected(Cell)"></td>
-                        <td>{{Cell.name}}</td>
-                        <td>{{Cell.score}}</td>
-                        <td><input class="SizeCheckbox" type="checkbox" ng-model="Cell.Remove"></td>
-                    </tr>
-                </table>
-                <br>
-                <div id="ShowHide">
-                    <input type="text" class="input" name="name" ng-model="Employee.name" >
-                    <input type="text" class="input" name="score" ng-model="Employee.score" >
-                </div>
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Angular JS Table</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <style>
+        body {
+            background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+            background: linear-gradient(to right, #25c481, #25b7c4);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        button {
+            padding: 3px 5px;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        table {
+            border-collapse: collapse;
+            border: none;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 4px 16px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .input {
+            width: 110px;
+            height: 35px;
+            font-size: 18px;
+            text-align: center;
+            background-color: snow;
+            box-sizing: border-box;
+            border: 2px solid #62dbcf;
+            border-radius: 6px;
+        }
+
+        .search {
+            width: 275px;
+            height: 35px;
+            font-size: 18px;
+            text-align: center;
+            background-color: snow;
+            box-sizing: border-box;
+            border: 2px solid #62dbcf;
+            border-radius: 6px;
+        }
+
+        .SizeCheckbox {
+            width: 15px;
+            height: 15px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <center>
+        <div ng-controller="myController">
+            <input type="text" placeholder="search" class="search" ng-model="search">
+            <button onclick="showaddRow()"> Add Row </button>
+            <button ng-click="editRow()"> Edit row </button>
+            <button ng-click="removeRow()"> Remove row </button>
+            <table>
+                <tr>
+                    <th>✎</th>
+                    <th ng-click="SortHeader('-FirstName')">FirstName</th>
+                    <th ng-click="SortHeader('-LastName')">LastName</th>
+                    <th ng-click="SortHeader('-Score')">Score</th>
+                    <th>X</th>
+                </tr>
+                <tr ng-repeat="Cell in students | filter : search | orderBy:Sort">
+                    <td><input class="SizeCheckbox" type="checkbox" ng-model="Cell.selected" ng-change="selected(Cell)"></td>
+                    <td>{{Cell.FirstName}}</td>
+                    <td>{{Cell.LastName}}</td>
+                    <td>{{Cell.Score}}</td>
+                    <td><input class="SizeCheckbox" type="checkbox" ng-model="Cell.Remove"></td>
+                </tr>
+            </table>
+            <br>
+            <div id="ShowHide">
+                <input type="text" class="input" name="FirstName" ng-model="Employee.FirstName">
+                <input type="text" class="input" name="LastName" ng-model="Employee.LastName">
+                <input type="text" class="input" name="Score" ng-model="Employee.Score">
             </div>
-        </center>
-    </body>
-    <script src="main.js"></script>
+            <div id="addrow" ng-controller="addRowController">
+                <input type="text" ng-model="FirstName" class="input" placeholder="FirstName">
+                <input type="text" ng-model="LastName" class="input" placeholder="LastName">
+                <input type="text" ng-model="Score" class="input" placeholder="Score">
+                <button ng-click="addRow()"> Add Row </button>
+            </div>
+        </div>
+    </center>
+</body>
+<script>
+    var app = angular.module('myApp', []);
+    app.factory('students', function() {
+        var students = [{
+                id: 1,
+                'FirstName': 'sara',
+                'LastName': 'rahmani',
+                'Score': 10
+            },
+            {
+                id: 2,
+                'FirstName': 'babak',
+                'LastName': 'mohamadi',
+                'Score': 12
+            },
+            {
+                id: 3,
+                'FirstName': 'mona',
+                'LastName': 'navab',
+                'Score': 20
+            },
+            {
+                id: 4,
+                'FirstName': 'amir',
+                'LastName': 'ranjbar',
+                'Score': 17
+            },
+            {
+                id: 5,
+                'FirstName': 'roya',
+                'LastName': 'javid',
+                'Score': 13
+            },
+            {
+                id: 6,
+                'FirstName': 'arash',
+                'LastName': 'omid',
+                'Score': 19
+            }
+        ];
+        return students;
+    });
+    app.controller('myController', function($scope, students) {
+        $scope.students = students;
+        $scope.removeRow = function() {
+            var remove = [];
+            angular.forEach($scope.students, function(value) {
+                if (!value.Remove) {
+                    remove.push(value);
+                }
+            });
+            $scope.students = remove;
+        };
+        $scope.SortHeader = function(order) {
+            if ($scope.Sort === order) {
+                if ($scope.Sort.charAt(0) === '+') {
+                    order = order.replace('+', '-');
+                } else {
+                    order = order.replace('-', '+');
+                }
+            }
+            $scope.Sort = order;
+        }
+
+
+        $scope.selected = function(Cell) {
+            if ($scope.students.filter(x => x.selected).length > 1) {
+                document.getElementById("ShowHide").style.display = 'none';
+                alert('You can only select one row to edit')
+            } else {
+                $scope.Employee = angular.copy($scope.students.find(x => x.selected));
+                document.getElementById("ShowHide").style.display = 'block';
+            }
+        }
+
+
+        $scope.editRow = function() {
+            if (!!$scope.students.find(x => x.FirstName === $scope.Employee.FirstName && x.LastName === $scope.Employee.LastName && x.Score === $scope.Employee.Score)) {
+                return;
+            }
+            var employeeToEdit = $scope.students.find(x => x.id === $scope.Employee.id);
+            employeeToEdit.FirstName = $scope.Employee.FirstName;
+            employeeToEdit.LastName = $scope.Employee.LastName;
+            employeeToEdit.Score = parseFloat($scope.Employee.Score);
+            document.getElementById("ShowHide").style.display = 'none';
+        }
+    });
+    app.controller('addRowController', function($scope, students) {
+        $scope.addRow = function() {
+            $scope.students = students;
+            var Profile = {};
+            var id = $scope.students.length + 1;
+            Profile.id = id;
+            Profile.FirstName = $scope.FirstName;
+            Profile.LastName = $scope.LastName;
+            Profile.Score = parseFloat($scope.Score);
+            $scope.students.push(Profile);
+            $scope.FirstName = null;
+            $scope.LastName = null;
+            $scope.Score = null;
+            console.log($scope.students)
+            document.getElementById("addrow").style.display = 'none';
+        };
+    });
+    document.getElementById("ShowHide").style.display = 'none';
+    document.getElementById("addrow").style.display = 'none';
+
+    function showaddRow() {
+        document.getElementById("addrow").style.display = 'block';
+    }
+
+</script>
+
 </html>
