@@ -2,6 +2,8 @@
 
 This is a multitasking table created using the js Angularjs Framework
 
+<img align="center" src="table.png">
+
 ## About the Angularjs Framework
 
 AngularJS was a JavaScript-based open-source front-end web framework for developing single-page applications. It was maintained mainly by Google and a community of individuals and corporations.
